@@ -1,0 +1,25 @@
+{
+  "name": "@wenu-tools/perceptual-hash",
+  "version": "0.1.0",
+  "description": "dHash 64-bit perceptual hash + Hamming distance + md5 for images (HEIC/JPG/PNG/WebP) via sharp.",
+  "type": "module",
+  "main": "./index.mjs",
+  "files": [
+    "index.mjs",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "sharp": "^0.33.0"
+  },
+  "license": "MIT",
+  "author": "Nicolás Ortega García <hola@wenumapuonline.com> (https://wenumapuonline.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wenumapu8-droid/wenu-tools.git",
+    "directory": "perceptual-hash"
+  },
+  "keywords": ["dhash", "perceptual-hash", "image-hash", "hamming", "dedupe", "sharp"]
+}

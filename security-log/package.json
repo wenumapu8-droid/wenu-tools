@@ -1,0 +1,24 @@
+{
+  "name": "@wenu-tools/security-log",
+  "version": "0.1.0",
+  "description": "Redact API keys, tokens, JWTs, and KEY=value secrets from text and objects before logging. Zero dependencies.",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "files": [
+    "index.ts",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "license": "MIT",
+  "author": "Nicolás Ortega García <hola@wenumapuonline.com> (https://wenumapuonline.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wenumapu8-droid/wenu-tools.git",
+    "directory": "security-log"
+  },
+  "keywords": ["security", "sanitize", "redact", "logging", "secrets", "typescript"]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "wenu-tools",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Small, dependency-light utilities for static sites and AI agents.",
+  "license": "MIT",
+  "author": "Nicolás Ortega García <hola@wenumapuonline.com> (https://wenumapuonline.com)",
+  "workspaces": [
+    "clean-images",
+    "gen-avif",
+    "security-log",
+    "perceptual-hash"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wenumapu8-droid/wenu-tools.git"
+  },
+  "homepage": "https://github.com/wenumapu8-droid/wenu-tools#readme",
+  "bugs": {
+    "url": "https://github.com/wenumapu8-droid/wenu-tools/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "sharp",
+    "webp",
+    "avif",
+    "perceptual-hash",
+    "dhash",
+    "sanitize",
+    "logging",
+    "static-site",
+    "utilities"
+  ]
+}
