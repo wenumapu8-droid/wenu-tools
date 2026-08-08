@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="color-scheme" content="dark" />
+  <title>KODEX−∞ · THRESHOLD / Visual Scaffold v1</title>
+  <style>
+    :root{
+      --bg:#020203;--ink:#f0eee8;--muted:#8a878f;--line:#2a2830;
+      --violet:#9c74ff;--violet2:#6036d8;--chrome:#d7d6de;--acid:#b4ff98;
+      --px:.5;--py:.5;--open:0;--ease:cubic-bezier(.2,.8,.2,1)
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+    button,a{font:inherit;color:inherit}
+    .shell{position:relative;width:100vw;height:100dvh;min-height:620px;overflow:hidden;background:
+      radial-gradient(circle at 62% 48%,rgba(108,67,214,.09),transparent 30%),
+      radial-gradient(circle at 65% 48%,rgba(255,255,255,.018),transparent 54%),#020203}
+    canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .grain{position:absolute;inset:0;pointer-events:none;opacity:.075;mix-blend-mode:soft-light;background-image:
+      repeating-linear-gradient(0deg,transparent 0 2px,rgba(255,255,255,.12) 3px,transparent 4px),
+      radial-gradient(circle at 20% 30%,rgba(255,255,255,.08) 0 1px,transparent 1px);
+      background-size:auto,5px 5px}
+    .vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 63% 48%,transparent 0 23%,rgba(0,0,0,.12) 45%,rgba(0,0,0,.74) 100%)}
+    .chrome{position:absolute;z-index:20;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.09);background:linear-gradient(#050506e8,#05050688);backdrop-filter:blur(14px);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+    .chrome-left,.chrome-right{display:flex;align-items:center;gap:14px}.brand{font-size:12px;font-weight:800;letter-spacing:.08em}.muted{color:var(--muted)}
+    .micro{border:1px solid var(--line);background:#070709b8;padding:7px 9px;cursor:pointer;letter-spacing:.1em;text-transform:uppercase}.micro:hover,.micro:focus-visible{border-color:#77717f;outline:none}
+    .layout{position:absolute;z-index:8;inset:53px 0 38px;display:grid;grid-template-columns:minmax(330px,.84fr) minmax(500px,1.16fr);align-items:center;padding:clamp(24px,5vw,76px);pointer-events:none}
+    .copy{position:relative;z-index:10;pointer-events:auto;max-width:690px;align-self:center}
+    .eyebrow{margin:0 0 24px;color:#ae9de8;font-size:10px;letter-spacing:.17em;text-transform:uppercase}
+    h1{margin:0;max-width:10ch;font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:clamp(54px,7vw,112px);line-height:.84;letter-spacing:-.064em;text-wrap:balance}
+    .lede{max-width:52ch;margin:26px 0 0;color:#a4a0aa;font-size:clamp(12px,1.1vw,15px);line-height:1.72}
+    .question{margin:34px 0 0;max-width:55ch;color:#d5d0da;font-size:11px;line-height:1.6;letter-spacing:.11em;text-transform:uppercase}
+    .actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+    .enter{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;min-width:min(360px,100%);text-align:left;border:1px solid rgba(186,168,236,.46);background:linear-gradient(115deg,rgba(26,20,38,.92),rgba(8,8,11,.88));padding:17px 18px;cursor:pointer;transition:transform .2s var(--ease),border-color .2s,background .2s;box-shadow:0 18px 50px #0008}
+    .enter:hover,.enter:focus-visible{transform:translateY(-2px);border-color:#cfc0ff;outline:none;background:linear-gradient(115deg,rgba(38,25,58,.96),rgba(8,8,11,.92))}
+    .enter .n{grid-row:1/3;color:var(--violet);font-size:10px}.enter strong{font-size:12px;letter-spacing:.13em}.enter small{color:#85818b;line-height:1.45}
+    .continue{display:none;border:1px solid rgba(180,255,152,.42);background:#071008cc;padding:14px 16px;text-decoration:none;font-size:10px;letter-spacing:.12em;text-transform:uppercase}.crossed .continue{display:inline-block}.crossed .enter{display:none}
+    .telemetry{position:absolute;z-index:11;right:24px;top:82px;width:220px;display:grid;gap:8px;pointer-events:none;color:#6f6b76;font-size:8px;letter-spacing:.12em;text-transform:uppercase}
+    .telemetry .row{display:flex;justify-content:space-between;gap:12px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.07)}.telemetry strong{color:#b7b0c3;font-weight:500}
+    .aperture-label{position:absolute;z-index:9;left:63%;top:50%;transform:translate(-50%,calc(-50% + min(31vw,360px)));pointer-events:none;text-align:center;color:#77717f;font-size:8px;letter-spacing:.2em;text-transform:uppercase;transition:opacity .4s}.aware .aperture-label{color:#a99ac4}.open .aperture-label{color:#d9caee}.crossed .aperture-label{opacity:0}
+    .state-dot{display:inline-block;width:5px;height:5px;margin-right:8px;border-radius:50%;background:#554c60;box-shadow:0 0 0 rgba(156,116,255,0)}.aware .state-dot{background:#8f71d6;box-shadow:0 0 14px rgba(156,116,255,.55)}.open .state-dot{background:#c6b3f6;box-shadow:0 0 18px rgba(196,171,255,.7)}.crossed .state-dot{background:var(--acid);box-shadow:0 0 18px rgba(180,255,152,.65)}
+    .footer{position:absolute;z-index:20;left:0;right:0;bottom:0;height:38px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(255,255,255,.08);background:#050506d9;color:#65616b;font-size:8px;letter-spacing:.11em;text-transform:uppercase;backdrop-filter:blur(10px)}
+    .footer strong{color:#a8a2ae;font-weight:500}.lab{color:#a58ec2}
+    .off *{animation:none!important;transition:none!important}
+    @media(max-width:900px){
+      .shell{min-height:0}.chrome{padding:10px 11px;min-height:48px}.chrome .muted:nth-child(n+2){display:none}.chrome-right>span{display:none}
+      .layout{inset:49px 0 35px;display:flex;align-items:flex-end;padding:18px 16px 28px;background:linear-gradient(180deg,transparent 0 43%,rgba(2,2,3,.18) 54%,rgba(2,2,3,.93) 78%,#020203 100%)}
+      .copy{max-width:none;width:100%}.eyebrow{margin-bottom:12px}h1{font-size:clamp(48px,15vw,72px);max-width:8.5ch}.lede{display:none}.question{margin-top:15px;font-size:9px;max-width:42ch}.actions{margin-top:14px}.enter{padding:14px 15px;min-width:0;width:100%}
+      .telemetry{right:12px;top:65px;width:155px;font-size:7px}.telemetry .row:nth-child(3){display:none}.aperture-label{left:50%;top:54%;transform:translate(-50%,30vw)}.footer{height:35px;padding:0 10px}.footer span:last-child{display:none}
+    }
+  </style>
+</head>
+<body>
+<main class="shell" id="shell" data-state="DORMANT" data-motion="full">
+  <canvas id="membrane" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div><div class="vignette" aria-hidden="true"></div>
+
+  <header class="chrome">
+    <div class="chrome-left"><span class="brand">KODEX−∞</span><span class="muted">KOD-49 / THRESHOLD</span><span class="muted">VISUAL SCAFFOLD V1</span></div>
+    <div class="chrome-right"><span><i class="state-dot"></i>STATE <strong id="stateLabel">DORMANT</strong></span><button class="micro" id="motionBtn" type="button">MOTION: FULL</button><button class="micro" id="resetBtn" type="button">RESET</button></div>
+  </header>
+
+  <div class="telemetry" aria-hidden="true">
+    <div class="row"><span>SCENE</span><strong>THRESHOLD</strong></div>
+    <div class="row"><span>MODE</span><strong>ART-DIRECTION LAB</strong></div>
+    <div class="row"><span>SEMANTIC ENTRY</span><strong>EXPLICIT</strong></div>
+    <div class="row"><span>IDENTITY CLAIM</span><strong>NONE</strong></div>
+  </div>
+
+  <section class="layout" aria-labelledby="title">
+    <div class="copy">
+      <p class="eyebrow">A / −∞ / VOLUNTARY ENTRY</p>
+      <h1 id="title">THE GATE IS A LIVING AGREEMENT.</h1>
+      <p class="lede">Presence changes the membrane. It does not identify you. The aperture only becomes a passage when you choose to cross.</p>
+      <p class="question">WILL YOU ENTER A SYSTEM THAT REMEMBERS TRANSFORMATION?</p>
+      <div class="actions">
+        <button class="enter" id="enterBtn" type="button"><span class="n">A</span><strong>ENTER VOLUNTARILY</strong><small>Explicit action commits the crossing. Pointer movement remains atmospheric only.</small></button>
+        <a class="continue" id="continueBtn" href="https://rawcdn.githack.com/wenumapu8-droid/wenu-tools/d9f0b4d56c294b5916c5d60fd76249d87e8e6215/kodex-preview/index.html">CONTINUE TO VISIBLE ASSEMBLY →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="aperture-label" id="apertureLabel">APPROACH THE MEMBRANE</div>
+
+  <footer class="footer"><span class="lab">NOINDEX / REVIEW MIRROR / NOT CANONICAL RENDERER</span><span>VISUAL IMPACT TARGET → NATIVE PORT</span></footer>
+</main>
+
+<script>
+(() => {
+  const shell = document.getElementById('shell');
+  const canvas = document.getElementById('membrane');
+  const ctx = canvas.getContext('2d', { alpha: false });
+  const stateLabel = document.getElementById('stateLabel');
+  const apertureLabel = document.getElementById('apertureLabel');
+  const motionBtn = document.getElementById('motionBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const enterBtn = document.getElementById('enterBtn');
+
+  let W=0,H=0,DPR=1,t=0,raf=0,last=0;
+  let px=.5,py=.5,targetX=.5,targetY=.5,proximity=0,dwell=0;
+  let state='DORMANT',motion='FULL',crossFlash=0;
+  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)');
+  if (prefersReduced.matches) motion='REDUCED';
+
+  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+  const lerp=(a,b,n)=>a+(b-a)*n;
+
+  function setState(next){
+    if(state===next) return;
+    state=next;
+    shell.dataset.state=next;
+    shell.classList.toggle('aware',next==='AWARE'||next==='OPEN'||next==='CROSSED');
+    shell.classList.toggle('open',next==='OPEN'||next==='CROSSED');
+    shell.classList.toggle('crossed',next==='CROSSED');
+    stateLabel.textContent=next;
+    apertureLabel.textContent=next==='DORMANT'?'APPROACH THE MEMBRANE':next==='AWARE'?'PRESENCE MODULATES / IDENTITY UNKNOWN':next==='OPEN'?'APERTURE STABLE / CHOICE REQUIRED':'CROSSING COMMITTED';
+  }
+
+  function setMotion(next){
+    motion=next;shell.dataset.motion=next.toLowerCase();shell.classList.toggle('off',next==='OFF');motionBtn.textContent=`MOTION: ${next}`;
+  }
+
+  function resize(){
+    DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.round(W*DPR);canvas.height=Math.round(H*DPR);canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+
+  function center(){return W<900?{x:W*.5,y:H*.40}:{x:W*.64,y:H*.49}}
+
+  function blobPath(cx,cy,base,time,layer=0){
+    const points=120;ctx.beginPath();
+    for(let i=0;i<=points;i++){
+      const a=(i/points)*Math.PI*2;
+      const w1=Math.sin(a*3+time*.75+layer*.9)*.07;
+      const w2=Math.sin(a*7-time*.43+layer*1.7)*.035;
+      const w3=Math.sin(a*13+time*.19)*.018;
+      const pull=Math.cos(a-Math.atan2((py-.5)*H,(px-.5)*W))*proximity*.055;
+      const r=base*(1+w1+w2+w3+pull);
+      const x=cx+Math.cos(a)*r*(1+.06*Math.sin(time*.23+layer));
+      const y=cy+Math.sin(a)*r*(.93+.035*Math.cos(time*.31+layer));
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+  }
+
+  function ring(cx,cy,outer,inner,time,layer,color,alpha,blur){
+    ctx.save();ctx.globalCompositeOperation='screen';ctx.shadowColor=color;ctx.shadowBlur=blur;ctx.fillStyle=color;
+    blobPath(cx,cy,outer,time,layer);
+    for(let i=120;i>=0;i--){
+      const a=(i/120)*Math.PI*2;
+      const wave=Math.sin(a*5-time*.41+layer)*.035+Math.sin(a*11+time*.29)*.015;
+      const r=inner*(1+wave);
+      const x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.96;
+      if(i===120)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.closePath();ctx.globalAlpha=alpha;ctx.fill('evenodd');ctx.restore();
+  }
+
+  function drawField(now){
+    const c=center();
+    const dt=Math.min(32,now-last||16);last=now;
+    if(motion!=='OFF')t+=dt*(motion==='REDUCED'?.00008:.00028);
+    px=lerp(px,targetX,motion==='OFF'?1:.055);py=lerp(py,targetY,motion==='OFF'?1:.055);
+
+    const dx=(targetX*W-c.x),dy=(targetY*H-c.y);const d=Math.hypot(dx,dy);const range=Math.min(W,H)*.46;
+    proximity=lerp(proximity,clamp(1-d/range),motion==='OFF'?1:.08);
+    if(proximity>.62 && state!=='CROSSED')dwell=clamp(dwell+dt/1700);else dwell=clamp(dwell-dt/900);
+    if(state!=='CROSSED'){
+      if(dwell>.94)setState('OPEN');else if(proximity>.18)setState('AWARE');else setState('DORMANT');
+    }
+
+    const open=state==='OPEN'?1:state==='CROSSED'?1:proximity*.58+dwell*.32;
+    shell.style.setProperty('--open',open.toFixed(3));
+
+    ctx.globalCompositeOperation='source-over';ctx.fillStyle='#020203';ctx.fillRect(0,0,W,H);
+
+    const glow=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,Math.min(W,H)*.56);
+    glow.addColorStop(0,`rgba(105,68,196,${.08+.08*open})`);glow.addColorStop(.28,'rgba(50,32,88,.045)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+
+    const base=Math.min(W,H)*(W<900?.265:.305);
+    const breathe=motion==='OFF'?1:1+Math.sin(t*2.8)*.018;
+    const outer=base*breathe*(1+open*.07);
+    const aperture=base*(.23+open*.19);
+
+    ring(c.x,c.y,outer*1.03,aperture*.88,t,0,'#4b2a91',.20+.10*open,34);
+    ring(c.x,c.y,outer*.88,aperture*1.06,t*1.07,1,'#8c62e7',.16+.16*open,28);
+    ring(c.x,c.y,outer*.72,aperture*1.22,t*.83,2,'#d6d3dc',.09+.08*open,18);
+
+    // Cellular lobes around the membrane edge.
+    ctx.save();ctx.globalCompositeOperation='screen';
+    const lobes=18;
+    for(let i=0;i<lobes;i++){
+      const a=i/lobes*Math.PI*2+t*.08;const wob=Math.sin(i*1.91+t*1.4)*.5+.5;
+      const rr=outer*(.74+.12*wob);const x=c.x+Math.cos(a)*rr;const y=c.y+Math.sin(a)*rr*.94;
+      const rad=base*(.055+.035*wob)*(1+open*.16);
+      const g=ctx.createRadialGradient(x-rad*.25,y-rad*.25,0,x,y,rad);
+      g.addColorStop(0,`rgba(235,230,244,${.12+.08*open})`);g.addColorStop(.24,`rgba(139,93,231,${.13+.08*open})`);g.addColorStop(1,'rgba(30,12,58,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rad,0,Math.PI*2);ctx.fill();
+    }
+    ctx.restore();
+
+    // Deep aperture: never a semantic action by itself.
+    const hole=ctx.createRadialGradient(c.x,c.y,aperture*.1,c.x,c.y,aperture*1.25);
+    hole.addColorStop(0,'rgba(0,0,0,1)');hole.addColorStop(.52,'rgba(2,2,3,.98)');hole.addColorStop(.78,`rgba(35,21,58,${.3+.18*open})`);hole.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=hole;ctx.beginPath();ctx.arc(c.x,c.y,aperture*1.27,0,Math.PI*2);ctx.fill();
+
+    // Internal signal, localized rather than global haze.
+    if(open>.18){
+      const sig=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,aperture*.88);
+      sig.addColorStop(0,`rgba(210,197,250,${.03+.10*open})`);sig.addColorStop(.42,`rgba(130,87,225,${.05+.10*open})`);sig.addColorStop(.78,'rgba(180,255,152,.018)');sig.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=sig;ctx.beginPath();ctx.arc(c.x,c.y,aperture*.9,0,Math.PI*2);ctx.fill();
+    }
+
+    // Pointer-local tension filament.
+    if(proximity>.12 && state!=='CROSSED'){
+      ctx.save();ctx.globalCompositeOperation='screen';ctx.strokeStyle=`rgba(173,145,239,${.08+proximity*.22})`;ctx.lineWidth=1;ctx.setLineDash([2,7]);ctx.beginPath();ctx.moveTo(targetX*W,targetY*H);ctx.quadraticCurveTo(lerp(targetX*W,c.x,.45),lerp(targetY*H,c.y,.45)-30,c.x,c.y);ctx.stroke();ctx.restore();
+    }
+
+    if(crossFlash>0){ctx.fillStyle=`rgba(229,223,245,${crossFlash*.16})`;ctx.fillRect(0,0,W,H);crossFlash=Math.max(0,crossFlash-dt/700)}
+
+    if(motion!=='OFF')raf=requestAnimationFrame(drawField);
+  }
+
+  function restart(){cancelAnimationFrame(raf);last=performance.now();drawField(last)}
+
+  addEventListener('resize',()=>{resize();restart()});
+  addEventListener('pointermove',e=>{targetX=clamp(e.clientX/W);targetY=clamp(e.clientY/H);shell.style.setProperty('--px',targetX);shell.style.setProperty('--py',targetY)},{passive:true});
+  addEventListener('pointerleave',()=>{targetX=.5;targetY=.5});
+
+  enterBtn.addEventListener('click',()=>{setState('CROSSED');crossFlash=1;dwell=1});
+  resetBtn.addEventListener('click',()=>{targetX=.5;targetY=.5;proximity=0;dwell=0;crossFlash=0;setState('DORMANT')});
+  motionBtn.addEventListener('click',()=>{setMotion(motion==='FULL'?'REDUCED':motion==='REDUCED'?'OFF':'FULL');restart()});
+  prefersReduced.addEventListener?.('change',e=>{if(e.matches&&motion==='FULL'){setMotion('REDUCED');restart()}});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(raf);else restart()});
+
+  resize();setMotion(motion);setState('DORMANT');restart();
+})();
+</script>
+</body>
+</html>
