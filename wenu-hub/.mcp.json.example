@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "wenu-hub": {
+      "type": "http",
+      "url": "${WENU_HUB_URL}/api/mcp",
+      "headers": {
+        "Authorization": "Bearer ${WENU_HUB_TOKEN}"
+      }
+    }
+  }
+}
